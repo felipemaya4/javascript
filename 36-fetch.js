@@ -3,7 +3,10 @@
 //fetch (ajax) y peticiones a servicios api rest 
 var usuarios = [];
 var divUsers = document.getElementById('usuarios');
+var divProfe = document.getElementById('profesor');
 var oneUser = document.getElementById('usuario');
+
+let pProfe = document.createElement('p');
 function getUsers(){
     return fetch('https://jsonplaceholder.typicode.com/users');
 }
@@ -32,9 +35,27 @@ function listarUsuario(usuario){
         //avatar.src = usuario.avatar
         //avatar.width = '100';
         listUsers.appendChild(nombre);
-        //listUsers.appendChild(avatar); si tuviara avatar el JSON así podriamos agregar la imagen a la pagina
+        //listUsers.appendChild(avatar); si tuviera avatar el JSON así podriamos agregar la imagen a la pagina
     
     return listUsers;
+}
+
+function getInfo(){
+    let profesor = {
+        nombre: 'felipe',
+        apellido: 'Maya',
+        url: "hola mundo"
+    };
+    return new Promise((resolve, reject)=>{ // creando una promesa se inicializan dos funciones "reject"  y "resolve" para rechazar si hay algun error o para devolver el dato solicitado
+        let profesor_string = '';
+        setTimeout(function(){ // con setTimeout podemos observar como la promesa mientras se termina de ejecutar se esperan las siguientes
+            profesor_string = JSON.stringify(profesor); // convertimos la varible en un objeto JSON
+            
+            if(typeof profesor_string != 'string' || profesor_string == '') return reject('error') // validamos los datos si son del tipo correcto y que no esté vacío
+
+            return resolve(profesor_string)
+        },3000);
+    });
 }
 getUsers()
 .then(data => data.json()) // capturar datos
@@ -43,7 +64,14 @@ getUsers()
     console.log(usuarios);
     divUsers.appendChild(listarUsuarios(usuarios));
     divUsers.querySelector('.loading').style.display = 'none';
-    return getUser(2); // podemos concatenar peticiones asincronas cuando termine con una continua con la siguiente utilizando este estructura
+    return getInfo(); // podemos concatenar peticiones asincronas cuando termine con una continua con la siguiente utilizando este estructura
+})
+.then(data =>{
+    console.log(data);
+    pProfe.innerHTML = data;
+    divProfe.querySelector('.loading').style.display = 'none';
+    divProfe.appendChild(pProfe);
+    return getUser(2);
 })
 .then(data=>data.json())// captura el dato de la segunda peticion
 .then(user =>{ // los procesa, en este caso un usuario del return getUser()
