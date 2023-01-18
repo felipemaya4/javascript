@@ -80,6 +80,6 @@ getUsers()
     oneUser.appendChild(listarUsuario(user));
     oneUser.querySelector('.loading').style.display = 'none';
 })
-.catch(error => { // con catch po demo capturar lo errores que pueden aparecer por alguna circunstancia 
+.catch(error => { // con catch podemos capturar lo errores que pueden aparecer por alguna circunstancia 
     console.error(error);
 });
